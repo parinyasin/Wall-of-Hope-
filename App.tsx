@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, HeartHandshake, BookOpen } from 'lucide-react';
+import { Download, HeartHandshake, Sparkles } from 'lucide-react';
 import { HERO_POEM, SYMBOLS, DONATIONS, WALLPAPER_INTRO } from './constants';
 import { DonationCard } from './components/DonationCard';
 import { SymbolCard } from './components/SymbolCard';
@@ -25,62 +25,71 @@ const App: React.FC = () => {
         symbols={SYMBOLS} 
       />
 
-      {/* Decorative Background Elements */}
-      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-100/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-orange-100/30 rounded-full blur-3xl"></div>
-      </div>
+      {/* Hero Section with Background Image */}
+      <header className="relative w-full min-h-[95vh] flex flex-col justify-center items-center text-center overflow-hidden">
+        {/* Background Layer */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={HERO_IMAGE_URL} 
+            alt="Background" 
+            className="w-full h-full object-cover object-center"
+          />
+          {/* White Overlay for text readability */}
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px]"></div>
+          {/* Gradient fade at bottom to blend with the rest of the page */}
+          <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-[#FDFBF7] to-transparent"></div>
+        </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 flex flex-col items-center">
+            
+            {/* Main Header Title - Prominent */}
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-amber-900 leading-tight font-maitree mb-8 drop-shadow-md animate-in fade-in zoom-in duration-1000 tracking-tight">
+                ส่งใจไปภาคใต้ <br className="lg:hidden" />
+                <span className="text-stone-800">มหาอุทกภัย 2568</span>
+            </h1>
+            
+            {/* Divider */}
+            <div className="w-32 h-1.5 bg-amber-500 rounded-full mb-12 shadow-sm animate-in fade-in width-0 duration-1000 delay-300"></div>
+
+            {/* Poem */}
+            <div className="max-w-xl mx-auto space-y-4 relative animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+                {/* Decorative Quotes */}
+                <div className="absolute -left-4 md:-left-12 -top-6 text-8xl text-amber-900/10 font-serif select-none">"</div>
+                
+                {HERO_POEM.map((line, idx) => {
+                    const isHope = line.includes('ความหวัง');
+                    const isRope = line.includes('เชือกบางๆ');
+                    
+                    let className = 'leading-relaxed transition-all duration-500 ';
+                    
+                    // Specific styling for the first line to act as a sub-header
+                    if (idx === 0) {
+                        className += 'text-2xl md:text-4xl font-maitree font-bold text-stone-700 mb-6 block';
+                    } else if (isHope) {
+                        className += 'text-3xl md:text-5xl font-maitree font-bold text-amber-700 my-8 drop-shadow-sm block scale-105 transform';
+                    } else if (isRope) {
+                        className += 'text-xl md:text-3xl font-maitree font-bold text-stone-800 italic mt-8 mb-6 block border-l-4 border-amber-400 pl-4 md:pl-0 md:border-none';
+                    } else if (line.includes('#')) {
+                        className += 'font-bold text-amber-800 text-xl';
+                    } else {
+                        className += 'text-lg md:text-xl text-stone-700 font-medium';
+                    }
+
+                    return (
+                    <p key={idx} className={className}>
+                        {line}
+                    </p>
+                    );
+                })}
+                <div className="absolute -right-4 md:-right-12 -bottom-6 text-8xl text-amber-900/10 font-serif rotate-180 select-none">"</div>
+            </div>
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <div className="relative z-10 max-w-4xl mx-auto px-4 pb-12 sm:px-6 lg:px-8 -mt-12 md:-mt-20">
         
-        {/* Header / Hero Section */}
-        <header className="text-center mb-16 space-y-8">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-amber-50 border border-amber-200 rounded-full text-amber-900 text-xl font-bold tracking-wide mb-4 shadow-sm font-maitree">
-             <span>ส่งใจไปภาคใต้ มหาอุทกภัย 2568</span>
-          </div>
-
-          {/* Landscape Hero Image */}
-          <div className="rounded-[2rem] overflow-hidden shadow-xl border-4 border-white mx-auto max-w-2xl mb-8 transform hover:scale-[1.01] transition-transform duration-500">
-            <img 
-              src={HERO_IMAGE_URL}
-              alt="Landscape with Cat and Moons" 
-              className="w-full h-auto object-cover"
-            />
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight font-maitree">
-            ในห้วงเวลา<br />
-            <span className="text-amber-700">ที่ยากลำบาก</span>
-          </h1>
-
-          <div className="max-w-xl mx-auto space-y-2 py-8 relative">
-             <div className="absolute left-1/2 -translate-x-1/2 top-0 text-6xl text-amber-200 opacity-50 font-serif">"</div>
-            {HERO_POEM.map((line, idx) => {
-                const isHope = line.includes('ความหวัง');
-                const isRope = line.includes('เชือกบางๆ');
-                
-                let className = 'leading-relaxed transition-all duration-500 ';
-                
-                if (isHope) {
-                    className += 'text-4xl md:text-5xl font-maitree font-bold text-amber-600 my-6 drop-shadow-sm';
-                } else if (isRope) {
-                    className += 'text-2xl md:text-3xl font-maitree font-medium text-stone-800 italic mt-6 mb-2 drop-shadow-sm';
-                } else if (line.includes('#')) {
-                    className += 'font-bold text-amber-800 text-xl';
-                } else {
-                    className += 'text-lg md:text-xl text-stone-600';
-                }
-
-                return (
-                  <p key={idx} className={className}>
-                      {line}
-                  </p>
-                );
-            })}
-             <div className="absolute left-1/2 -translate-x-1/2 bottom-0 text-6xl text-amber-200 opacity-50 font-serif rotate-180">"</div>
-          </div>
-        </header>
-
         {/* Wallpaper Preview Section */}
         <section className="mb-20">
             <div className="bg-white rounded-[3rem] p-8 shadow-2xl border-4 border-amber-50 relative overflow-hidden">
@@ -94,7 +103,7 @@ const App: React.FC = () => {
                             alt="Wall of Hope Wallpaper Preview" 
                             className="w-full h-auto rounded-[2.5rem] shadow-2xl border-8 border-stone-800 object-cover"
                         />
-                         {/* Status Bar simulation just for feel */}
+                         {/* Status Bar simulation */}
                          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-50"></div>
                     </div>
 
@@ -136,15 +145,23 @@ const App: React.FC = () => {
             </div>
 
             {/* Prayer Mode Trigger Button */}
-            <div className="flex justify-center">
+            <div className="flex justify-center py-4">
                 <button
                     onClick={() => setIsPrayerModeOpen(true)}
-                    className="group relative inline-flex items-center gap-3 px-8 py-4 bg-stone-900 text-amber-50 rounded-full shadow-2xl hover:bg-stone-800 hover:-translate-y-1 transition-all duration-300 font-maitree text-xl tracking-wide overflow-hidden"
+                    className="group relative inline-flex items-center gap-3 px-10 py-5 bg-stone-900 text-amber-50 rounded-full shadow-2xl hover:scale-105 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(251,191,36,0.6)] transition-all duration-300 font-maitree text-2xl font-bold tracking-wide overflow-hidden border border-amber-500/30"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div className="relative flex items-center gap-3">
-                        <BookOpen className="w-6 h-6 text-amber-400" />
-                        <span>เข้าสู่โหมดอธิษฐานจิต</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/20 to-amber-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    {/* Sparkle animations */}
+                    <div className="absolute inset-0 pointer-events-none">
+                        <Sparkles className="absolute top-2 left-6 w-4 h-4 text-amber-200 opacity-0 group-hover:opacity-100 animate-ping duration-1000" />
+                        <Sparkles className="absolute bottom-3 right-6 w-3 h-3 text-amber-100 opacity-0 group-hover:opacity-100 animate-bounce delay-300" />
+                    </div>
+
+                    <div className="relative flex items-center gap-4 z-10">
+                        <Sparkles className="w-6 h-6 text-amber-400 group-hover:animate-pulse" />
+                        <span className="bg-gradient-to-r from-amber-100 to-white bg-clip-text text-transparent group-hover:text-white drop-shadow-sm">เข้าสู่โหมดร่วมอธิษฐาน</span>
+                        <Sparkles className="w-6 h-6 text-amber-400 group-hover:animate-pulse delay-150" />
                     </div>
                 </button>
             </div>
