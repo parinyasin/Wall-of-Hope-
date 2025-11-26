@@ -1,3 +1,4 @@
+import React from 'react';
 import { SymbolItem, DonationInfo } from './types';
 import { CloudRain, Shield, Coins, Star, RefreshCcw } from 'lucide-react';
 
